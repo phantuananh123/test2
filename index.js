@@ -1,6 +1,8 @@
 const idgame = document.getElementById("listGame");
 const prevBtn = document.getElementById("prev");
 const nextBtn = document.getElementById("next");
+const searchBtn = document.getElementById("searchGourp");
+const input = document.getElementById("input");
 let page = 1;
 const getDatagame = async (query) => {
   let url = `https://steam-api-dot-cs-platform-306304.et.r.appspot.com/games?page=${page}&limit=10`;
@@ -10,32 +12,30 @@ const getDatagame = async (query) => {
   console.log(url);
   const res = await fetch(url);
   const data = await res.json();
-  console.log("data", data);
-  return data;
-};
-const renderDatagame = async () => {
-  const data = await getDatagame();
   const listGame = document.getElementById("listGame");
   const ullistGame = listGame.children[0];
-
+  ullistGame.innerHTML = "";
   data.data.forEach((element) => {
     const x = document.createElement("li");
-    console.log(x);
     x.innerHTML = `${element.name}`;
     ullistGame.appendChild(x);
   });
 
   return data;
 };
+const search = async () => {
+  const inputValue = input.value;
+  getDatagame(inputValue);
+  console.log(inputValue);
+};
 const prev = async () => {
   if (page > 1) {
     page--;
   }
-  getDatagame();
+  getDatagame(page);
 };
 const next = async () => {
   page++;
-  getDatagame();
+  getDatagame(page);
 };
 getDatagame();
-renderDatagame();
